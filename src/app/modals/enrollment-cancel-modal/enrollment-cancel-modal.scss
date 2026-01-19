@@ -1,0 +1,43 @@
+// Glass styles for the modal
+$glass-bg: rgba(255, 255, 255, 0.85);
+$primary-text: #1e293b;
+
+:host {
+    display: block;
+}
+
+.glass-modal-content {
+    padding: 2rem;
+    background: $glass-bg;
+    backdrop-filter: blur(12px);
+    color: $primary-text;
+    border-radius: 20px; // Ensure the dialog container itself has rounded corners or this needs to fit inside
+
+    h2 {
+        margin-top: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: #64748b;
+        margin-bottom: 1.5rem;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+}
+
+// Override Mat Form Field to look "Glassy"
+::ng-deep .glass-input {
+    width: 100%;
+
+    .mat-mdc-text-field-wrapper {
+        background: rgba(255, 255, 255, 0.6) !important;
+    }
+}

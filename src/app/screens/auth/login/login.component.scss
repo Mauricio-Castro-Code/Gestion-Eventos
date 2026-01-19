@@ -1,0 +1,513 @@
+@use 'sass:color';
+// Variables
+$navy-blue: #1A237E;
+$deep-navy: #0A192F;
+$vibrant-purple: #7C4DFF;
+$electric-teal: #00E5FF;
+$soft-teal: #ccfbf1;
+$soft-indigo: #e0e7ff;
+$slate-gray: #475569;
+
+$glass-border: rgba(255, 255, 255, 0.6);
+$glass-bg-strong: rgba(255, 255, 255, 0.65);
+$glass-bg-soft: rgba(255, 255, 255, 0.4);
+
+// Mixins
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin glass-panel {
+    background: $glass-bg-strong;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid $glass-border;
+    box-shadow: 0 20px 40px -10px rgba(26, 35, 126, 0.1); // Navy shadow, softer
+}
+
+// Host Container (Full Screen Background)
+:host {
+    display: block;
+    min-height: 100vh;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: $slate-gray;
+    position: relative;
+    overflow: hidden;
+
+    // Light Vibrant Mesh Gradient (Matches Landing vibe but more "login" focus)
+    background:
+        radial-gradient(at 0% 0%, rgba(124, 77, 255, 0.1) 0, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(0, 229, 255, 0.15) 0, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(26, 35, 126, 0.05) 0, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(124, 77, 255, 0.1) 0, transparent 50%),
+        #F8FAFC; // Off-white base
+    background-size: 200% 200%;
+    animation: gradient-drift 20s ease infinite;
+}
+
+// Floating Background Orbs (Lighter, softer)
+.background-orbs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+
+    .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.5;
+        animation: float-slow 15s ease-in-out infinite;
+
+        &.orb-1 {
+            width: 500px;
+            height: 500px;
+            background: rgba(124, 77, 255, 0.15); // Purple
+            top: -150px;
+            left: -100px;
+        }
+
+        &.orb-2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(0, 229, 255, 0.15); // Teal
+            bottom: -50px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        &.orb-3 {
+            width: 300px;
+            height: 300px;
+            background: rgba(26, 35, 126, 0.05); // Navy
+            top: 50%;
+            left: 50%;
+            animation-duration: 20s;
+        }
+    }
+}
+
+// Main Container
+.login-container {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    @include flex-center;
+    padding: 20px;
+}
+
+// The Glass Citadel (Split Card)
+.glass-citadel {
+    @include glass-panel;
+    border-radius: 32px;
+    width: 100%;
+    max-width: 1100px; // Slightly wider for more icons
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    @media (min-width: 900px) {
+        flex-direction: row;
+        min-height: 650px; // Taller for composition
+    }
+}
+
+// Left Side: Visual Experience
+.visual-side {
+    padding: 3rem 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.4); // Light overlay
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+
+    @media (min-width: 900px) {
+        width: 50%;
+        padding: 4rem;
+        align-items: flex-start;
+        text-align: left;
+        border-bottom: none;
+        border-right: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 0.75rem;
+        line-height: 1.25; // FIXED: Increased from overlapping default
+        padding-bottom: 0.2rem; // Space for descenders
+
+        // Gradient Text
+        background: radial-gradient(circle at top left, #1A237E, #3949AB);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        // Fallback color if gradient fails
+        color: $navy-blue;
+        z-index: 2;
+        letter-spacing: -0.02em; // Slightly tighter but not overlapping
+    }
+
+    p {
+        color: $slate-gray;
+        font-size: 1.15rem;
+        font-weight: 500;
+        z-index: 2;
+        max-width: 380px;
+        line-height: 1.6;
+    }
+
+    // Floating Bubble Composition
+    .floating-composition {
+        position: relative;
+        height: 250px;
+        width: 100%;
+        margin-top: 2rem;
+        // @include flex-center; // Don't center, let absolutes work freely relative to this box
+
+        @media (min-width: 900px) {
+            margin-top: auto;
+            margin-bottom: 1rem;
+            height: 350px;
+        }
+
+        .glass-bubble {
+            @include glass-panel;
+            position: absolute;
+            border-radius: 50%;
+            @include flex-center;
+            color: $navy-blue;
+            background: rgba(255, 255, 255, 0.6); // Lighter bubbles
+            box-shadow: 0 8px 32px rgba(26, 35, 126, 0.1);
+
+            mat-icon {
+                font-size: 2rem;
+                width: 2rem;
+                height: 2rem;
+            }
+
+            // --- ANIMATIONS & POSITIONS ---
+
+            // 1. Center Main - School
+            &.bubble-1 {
+                width: 110px;
+                height: 110px;
+                z-index: 3;
+                left: 50%;
+                top: 50%;
+                margin-left: -55px; // Center calc
+                margin-top: -55px;
+                animation: float 6s ease-in-out infinite;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.5));
+
+                mat-icon {
+                    font-size: 3.5rem;
+                    width: 3.5rem;
+                    height: 3.5rem;
+                    color: #3949AB;
+                }
+            }
+
+            // 2. Top Right - Rocket
+            &.bubble-2 {
+                width: 80px;
+                height: 80px;
+                top: 15%;
+                right: 15%;
+                animation: float 5s ease-in-out infinite 1s;
+                background: linear-gradient(135deg, #e0f2fe, #fff);
+
+                mat-icon {
+                    color: #0288D1;
+                    font-size: 2.2rem;
+                    width: 2.2rem;
+                    height: 2.2rem;
+                }
+            }
+
+            // 3. Bottom Left - Code
+            &.bubble-3 {
+                width: 70px;
+                height: 70px;
+                bottom: 20%;
+                left: 15%;
+                animation: float 7s ease-in-out infinite 0.5s;
+                background: linear-gradient(135deg, #f3e8ff, #fff);
+
+                mat-icon {
+                    color: #7B1FA2;
+                }
+            }
+
+            // 4. Top Left (Desktop Only)
+            &.bubble-4 {
+                width: 60px;
+                height: 60px;
+                top: 10%;
+                left: 10%;
+                animation: float 8s ease-in-out infinite 2s;
+                background: linear-gradient(135deg, #ecfdf5, #fff);
+                display: none; // hidden on mobile
+
+                @media(min-width: 900px) {
+                    display: flex;
+                }
+
+                mat-icon {
+                    color: #00897B;
+                    font-size: 1.5rem;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+            }
+
+            // 5. Bottom Right (Desktop Only)
+            &.bubble-5 {
+                width: 65px;
+                height: 65px;
+                bottom: 10%;
+                right: 5%;
+                animation: float 6s ease-in-out infinite 1.5s;
+                background: linear-gradient(135deg, #fff3e0, #fff);
+                display: none;
+
+                @media(min-width: 900px) {
+                    display: flex;
+                }
+
+                mat-icon {
+                    color: #F57C00;
+                    font-size: 1.8rem;
+                    width: 1.8rem;
+                    height: 1.8rem;
+                }
+            }
+
+            // 6. Tiny floater (Desktop Only)
+            &.bubble-6 {
+                width: 40px;
+                height: 40px;
+                top: 40%;
+                right: 5%;
+                animation: float-reverse 9s ease-in-out infinite;
+                display: none;
+
+                @media(min-width: 900px) {
+                    display: flex;
+                }
+
+                mat-icon {
+                    font-size: 1.2rem;
+                    width: 1.2rem;
+                    height: 1.2rem;
+                    color: $slate-gray;
+                }
+            }
+        }
+    }
+}
+
+// Right Side: Form
+.form-side {
+    padding: 3rem 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: transparent;
+
+    @media (min-width: 900px) {
+        width: 50%;
+        padding: 4rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        text-align: center;
+        color: $navy-blue;
+        letter-spacing: -0.5px;
+    }
+}
+
+// Form Styles
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+// Custom Light Glass Input
+::ng-deep .mat-mdc-form-field {
+    width: 100%;
+
+    .mat-mdc-text-field-wrapper {
+        background-color: rgba(255, 255, 255, 0.5) !important; // Light semi-transparent
+        border-radius: 12px !important;
+        padding: 0 16px;
+        border: 1px solid rgba(26, 35, 126, 0.1); // Subtle navy border
+        transition: all 0.3s ease;
+    }
+
+    .mdc-line-ripple {
+        display: none !important;
+    }
+
+    // Focus State
+    &.mat-focused .mat-mdc-text-field-wrapper {
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        border-color: $vibrant-purple;
+        box-shadow: 0 4px 12px rgba(124, 77, 255, 0.1);
+    }
+
+    // Text Colors
+    input.mat-mdc-input-element {
+        color: $navy-blue !important;
+        caret-color: $vibrant-purple;
+        font-weight: 500;
+    }
+
+    // Labels
+    .mat-mdc-floating-label {
+        color: $slate-gray !important;
+    }
+
+    &.mat-focused .mat-mdc-floating-label {
+        color: $navy-blue !important;
+        font-weight: 600;
+    }
+
+    // Icons
+    .mat-mdc-icon-button {
+        color: rgba($navy-blue, 0.5);
+
+        &:hover {
+            color: $navy-blue;
+        }
+    }
+}
+
+// Links
+.forgot-password {
+    text-align: right;
+
+    a {
+        color: $slate-gray;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s;
+
+        &:hover {
+            color: $vibrant-purple;
+            text-decoration: underline;
+        }
+    }
+}
+
+// Submit Button
+.btn-submit {
+    width: 100%;
+    background: linear-gradient(135deg, $navy-blue 0%, $vibrant-purple 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(26, 35, 126, 0.3);
+    margin-top: 1rem;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(26, 35, 126, 0.4);
+        background: linear-gradient(135deg, color.mix(#fff, $navy-blue, 5%), color.mix(#fff, $vibrant-purple, 5%));
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+        background: $slate-gray;
+    }
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: $slate-gray;
+
+    a {
+        color: $navy-blue;
+        font-weight: 700;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+            color: $vibrant-purple;
+        }
+    }
+}
+
+// Animations
+@keyframes gradient-drift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes float-reverse {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(15px);
+    }
+}
+
+@keyframes float-slow {
+
+    0%,
+    100% {
+        transform: translateY(0px) scale(1);
+    }
+
+    50% {
+        transform: translateY(-30px) scale(1.05);
+    }
+}

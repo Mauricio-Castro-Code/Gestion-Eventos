@@ -1,0 +1,94 @@
+// Midnight Glass Theme Reference
+// Save this file for future Dark Mode implementation
+
+$glass-bg: rgba(255, 255, 255, 0.05);
+$glass-border: rgba(255, 255, 255, 0.1);
+$glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+$neon-accent: #00f2ff;
+$neon-warning: #ffbf00;
+$neon-danger: #ff0055;
+$text-primary: #ffffff;
+$text-secondary: rgba(255, 255, 255, 0.7);
+
+:host-context(.dark-theme) {
+    // Mesh Gradient Background
+    background:
+        radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+        radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
+    background-color: #0f172a;
+
+    .glass-panel {
+        background: rgba(17, 25, 40, 0.75);
+        border-color: $glass-border;
+    }
+
+    h1 {
+        background: linear-gradient(to right, #fff, #a5f3fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .glass-field .mat-mdc-text-field-wrapper {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        border-color: transparent !important;
+    }
+
+    .glass-field.mat-focused .mat-mdc-text-field-wrapper {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border-color: rgba($neon-accent, 0.5) !important;
+        box-shadow: 0 0 15px rgba($neon-accent, 0.15);
+    }
+
+    .glass-field .mat-mdc-input-element {
+        color: white !important;
+        caret-color: $neon-accent;
+    }
+
+    .glass-field .field-label {
+        color: $text-secondary;
+    }
+
+    .upload-area {
+        border-color: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.01);
+
+        &:hover {
+            border-color: $neon-accent;
+            background: rgba($neon-accent, 0.05);
+        }
+
+        .upload-content p {
+            color: $text-secondary;
+        }
+
+        .upload-content span {
+            color: $neon-accent;
+        }
+
+        .icon-circle {
+            background: rgba(255, 255, 255, 0.05);
+
+            mat-icon {
+                color: $neon-accent;
+            }
+        }
+    }
+
+    .modality-chip {
+        background: rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: $text-secondary;
+
+        &.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: $neon-accent;
+        }
+    }
+
+    .sticky-footer {
+        background: rgba(10, 10, 15, 0.85);
+        border-top-color: $glass-border;
+    }
+}

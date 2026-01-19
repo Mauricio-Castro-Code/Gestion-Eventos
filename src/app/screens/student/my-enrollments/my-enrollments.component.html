@@ -1,0 +1,121 @@
+<div class="enrollments-container fade-in">
+    <!-- Header: Personal HUD -->
+    <header class="glass-hud">
+        <div class="title-section">
+            <h1>Mi Historial Académico</h1>
+            <p class="subtitle">Gestiona tus inscripciones y asistencia</p>
+        </div>
+
+        <div class="stats-pills">
+            <div class="glass-pill active-glow">
+                <span class="label">Activos</span>
+                <span class="value">{{ stats().active }}</span>
+            </div>
+            <div class="glass-pill history-glow">
+                <span class="label">Asistencias</span>
+                <span class="value">{{ stats().attended }}</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation: Floating Tabs -->
+    <nav class="glass-tabs">
+        <div class="segmented-control">
+            <button class="tab-btn" [class.active]="currentTab() === 'upcoming'" (click)="switchTab('upcoming')">
+                Próximos Eventos
+            </button>
+            <button class="tab-btn" [class.active]="currentTab() === 'history'" (click)="switchTab('history')">
+                Historial Completo
+            </button>
+            <div class="glider" [class.right]="currentTab() === 'history'"></div>
+        </div>
+    </nav>
+
+    <!-- The List: Glass Tickets -->
+    <div class="tickets-list">
+        @if (filteredEnrollments().length > 0) {
+        @for (item of filteredEnrollments(); track item.id) {
+        <div class="glass-ticket">
+            <!-- Date Section -->
+            <div class="ticket-stub">
+                <span class="day">{{ item.date | date:'dd' }}</span>
+                <span class="month">{{ item.date | date:'MMM' | uppercase }}</span>
+                <span class="year">{{ item.date | date:'yyyy' }}</span>
+            </div>
+
+            <div class="dashed-divider"></div>
+
+            <!-- Info Section -->
+            <div class="ticket-body">
+                <div class="info">
+                    <h3 class="event-title">{{ item.title }}</h3>
+                    <div class="meta-row">
+                        <span class="venue">
+                            <mat-icon>location_on</mat-icon> {{ item.venue }}
+                        </span>
+                        <span class="time">
+                            <mat-icon>access_time</mat-icon> {{ item.date | date:'shortTime' }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Status/Action Section -->
+                <div class="ticket-actions">
+                    @if (currentTab() === 'upcoming') {
+                    <div class="badge neon-green">INSCRITO</div>
+                    <button mat-icon-button class="ghost-btn-red" (click)="initiateCancellation(item.id)"
+                        matTooltip="Liberar Lugar">
+                        <mat-icon>event_busy</mat-icon>
+                    </button>
+                    } @else {
+                    @if (item.status === 'attended') {
+                    <div class="badge neon-blue">ASISTIÓ</div>
+                    } @else if (item.status === 'missed') {
+                    <div class="badge neon-red">FALTA</div>
+                    } @else {
+                    <div class="badge neon-gray">{{ item.status | uppercase }}</div>
+                    }
+                    }
+                </div>
+            </div>
+        </div>
+        }
+        } @else {
+        <div class="empty-state glass-card">
+            <div class="illustration">
+                <mat-icon>event_note</mat-icon>
+            </div>
+            <h3>No hay eventos {{ currentTab() === 'upcoming' ? 'próximos' : 'en el historial' }}</h3>
+            <p>Explora el catálogo para encontrar nuevas oportunidades de aprendizaje.</p>
+            <button mat-flat-button color="primary" routerLink="/dashboard/events">
+                Explorar Catálogo
+            </button>
+        </div>
+        }
+    </div>
+</div>
+
+<!-- Cancellation Modal (Glass Alert) -->
+@if (showModal()) {
+<div class="glass-modal-backdrop fade-in" (click)="cancelModal()">
+    <div class="glass-modal glass-alert" (click)="$event.stopPropagation()">
+        <div class="modal-icon warning-glow">
+            <mat-icon>warning_amber</mat-icon>
+        </div>
+        <h2>Liberar Lugar</h2>
+        <p>¿Estás seguro de que deseas cancelar tu asistencia? Esta acción liberará tu cupo para otro estudiante.</p>
+
+        <mat-form-field appearance="outline" class="reason-input">
+            <mat-label>Motivo (Opcional)</mat-label>
+            <textarea matInput [(ngModel)]="cancellationReason" rows="3" placeholder="Ej. Problema personal"></textarea>
+        </mat-form-field>
+
+        <div class="modal-actions">
+            <button mat-button (click)="cancelModal()">Conservar Lugar</button>
+            <button mat-flat-button color="warn" (click)="confirmCancellation()">
+                Confirmar Cancelación
+            </button>
+        </div>
+    </div>
+</div>
+}

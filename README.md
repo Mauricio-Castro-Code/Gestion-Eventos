@@ -1,59 +1,81 @@
-# GteaFront
+# GTEA - Gestión de Tickets y Eventos Académicos
+## Propuesta 1: Modern Glassmorphism (Glass Flux)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.14.
+Este proyecto es una aplicación web moderna construida con **Angular 20**, diseñada bajo el sistema de diseño **"Glass Flux"** que prioriza la estética premium, efectos de cristal (glassmorphism), gradientes vibrantes y una experiencia de usuario fluida y receptiva.
 
-## Development server
+### 🚀 Tecnologías Clave
+- **Framework**: Angular 20 (Standalone Components, Signals, Control Flow `@if/@for`, `@defer`)
+- **Estilos**: SCSS con variables CSS nativas, Glassmorphism, Micro-interacciones.
+- **Diseño**: "Glass ecosystem" con soporte para modo claro/oscuro (en desarrollo) y diseño responsivo móvil-first.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 🧭 Guía de Interfaces y Acceso
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+A continuación se detalla el mapa de navegación del proyecto y cómo acceder a cada una de las interfaces desarrolladas.
 
-## Code scaffolding
+### 1. Portal Público
+La puerta de entrada a la plataforma.
+- **Landing Page**
+  - **Ruta**: `/` o `/landing`
+  - **Descripción**: Página principal con Hero section, características, y llamadas a la acción. Introduce la estética visual del proyecto.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 2. Autenticación
+Interfaces de acceso seguro.
+- **Login**
+  - **Ruta**: `/auth/login`
+  - **Descripción**: Formulario de inicio de sesión con tarjeta de cristal, validaciones reactivas y visibilidad de contraseña.
+- **Registro**
+  - **Ruta**: `/auth/register`
+  - **Descripción**: Pantalla de registro para nuevos usuarios.
 
-```bash
-ng generate component component-name
-```
+### 3. Dashboard Principal (Layout)
+- **Ruta Base**: `/dashboard`
+- **Descripción**: Contenedor principal para usuarios autenticados. Incluye la barra lateral de navegación (Sidebar) y el área de contenido principal. El acceso a las siguientes rutas asume que estás dentro de este layout.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+#### Gestión de Eventos (Admin / Organizador)
+Herramientas para la administración de eventos.
+- **Listado de Eventos**
+  - **Ruta**: `/dashboard/events`
+  - **Descripción**: Tabla administradora para ver, buscar y gestionar todos los eventos creados.
+- **Crear Nuevo Evento**
+  - **Ruta**: `/dashboard/events/new`
+  - **Descripción**: Formulario completo para dar de alta un evento (título, fechas, configuración, etc.).
+- **Editar Evento**
+  - **Ruta**: `/dashboard/events/edit/:id` (Ejemplo: `/dashboard/events/edit/1`)
+  - **Descripción**: Mismo formulario de creación precargado con datos para edición.
+- **Gestión de Asistencia (Enrollments)**
+  - **Ruta**: `/dashboard/events/:id/enrollments` (Ejemplo: `/dashboard/events/101/enrollments`)
+  - **Descripción**: Pantalla de "alta velocidad" para tomar asistencia. Incluye HUD de KPIs, lista de estudiantes responsiva y toggle de asistencia rápida.
 
-```bash
-ng generate --help
-```
+#### Área del Estudiante
+Vista personal para los asistentes.
+- **Mis Inscripciones (My Enrollments)**
+  - **Ruta**: `/dashboard/my-enrollments`
+  - **Descripción**: Dashboard personal del estudiante donde visualizan sus "Tickets de Cristal", estado de sus inscripciones y opciones de cancelación.
 
-## Building
+---
 
-To build the project run:
+## 🛠️ Cómo Ejecutar el Proyecto
 
-```bash
-ng build
-```
+1. **Instalar dependencias**:
+   ```bash
+   npm install
+   ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+2. **Iniciar servidor de desarrollo**:
+   ```bash
+   npm start
+   # o
+   ng serve
+   ```
 
-## Running unit tests
+3. **Acceder**:
+   Navega a `http://localhost:4200/` en tu navegador.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+---
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🎨 Notas de Diseño
+- **Glassmorphism**: Se utiliza extensivamente `backdrop-filter: blur()`, bordes semitransparentes y sombras sutiles para crear profundidad.
+- **Responsividad**: Todas las pantallas están optimizadas desde móviles (320px) hasta escritorio (1920px+).
+- **Tipografía**: Fuentes modernas (Inter/Outfit) para legibilidad y estilo.

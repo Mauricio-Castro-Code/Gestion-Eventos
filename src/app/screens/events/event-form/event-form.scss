@@ -1,0 +1,720 @@
+// Use dashboard/landing variables as reference but defined locally if needed
+// Or rely on CSS variables defined in styles.scss
+$glass-panel: rgba(255, 255, 255, 0.70); // Slightly more transparent than dashboard
+$glass-border: rgba(255, 255, 255, 0.8);
+$text-primary: #1e293b;
+$text-secondary: #64748b;
+$primary-blue: #3b82f6;
+
+:host {
+  display: block;
+  padding-bottom: 90px;
+  font-family: 'Inter', sans-serif;
+  color: $text-primary;
+}
+
+/* Header */
+.header {
+  padding: 1rem 0 2rem;
+
+  @media (max-width: 600px) {
+    padding: 1rem 1rem 1.5rem;
+  }
+
+  .breadcrumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    align-items: center;
+
+    .crumb {
+      padding: 0.35rem 1rem;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 99px;
+      font-size: 0.8rem;
+      color: $text-secondary;
+      text-decoration: none;
+      transition: all 0.2s;
+      font-weight: 500;
+
+      &.active {
+        background: rgba(59, 130, 246, 0.1);
+        color: $primary-blue;
+        border-color: rgba(59, 130, 246, 0.2);
+        font-weight: 600;
+      }
+
+      &:hover:not(.active) {
+        background: white;
+        color: $text-primary;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+    }
+
+    .separator {
+      color: $text-secondary;
+      opacity: 0.5;
+    }
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin: 0;
+      background: linear-gradient(135deg, #0f172a 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      padding-bottom: 0.1em;
+
+      @media (max-width: 600px) {
+        font-size: 2rem;
+      }
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 99px;
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      color: $primary-blue;
+      font-size: 0.85rem;
+      font-weight: 600;
+
+      .pulse-dot {
+        width: 8px;
+        height: 8px;
+        background: $primary-blue;
+        border-radius: 50%;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        animation: pulse 2s infinite;
+      }
+    }
+  }
+}
+
+/* Main Layout */
+.editor-layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2rem;
+  box-sizing: border-box;
+  width: 100%;
+
+  // Ensuring centering on all views
+  justify-content: center;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center; // Center items vertically (cross axis) when stacked
+    padding: 0 1rem;
+  }
+}
+
+/* Glass Panels */
+.glass-panel {
+  background: $glass-panel;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.02),
+    0 10px 30px -5px rgba(0, 0, 0, 0.03);
+
+  // Default box model ensure padding is included
+  box-sizing: border-box;
+
+  @media (max-width: 600px) {
+    padding: 1.5rem;
+    border-radius: 20px;
+    width: 100%; // Force full width on mobile
+  }
+
+  &.left-panel {
+    flex: 6.5;
+    min-width: 0;
+    // Ensure max-width doesn't exceed container
+    max-width: 100%;
+
+    @media (max-width: 1024px) {
+      flex: 1 1 100%;
+      width: 100%;
+    }
+  }
+
+  &.right-panel {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+    max-width: 100%;
+
+    @media (max-width: 1024px) {
+      flex: 1 1 100%;
+      width: 100%;
+      position: static;
+    }
+  }
+}
+
+/* Field Container (Wrapper for Label + Input) */
+.field-container {
+  margin-bottom: 2rem;
+  // Add extra space between fields
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.1px;
+}
+
+/* Extras Grid (Responsive) */
+.extras-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr; // Stack vertically on mobile
+    gap: 0; // Remove gap as margin-bottom handles spacing
+  }
+}
+
+/* Form Elements Customization */
+.form-section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  mat-icon {
+    color: $primary-blue;
+    background: rgba(59, 130, 246, 0.1);
+    padding: 6px;
+    border-radius: 10px;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* --- MATERIAL INPUTS (Clean, Label-less Style) --- */
+::ng-deep {
+  .mat-mdc-form-field.no-label {
+    display: block !important;
+
+    // Remove subscript spacing as label is outside
+    .mat-mdc-form-field-subscript-wrapper {
+      margin-top: 0.2em;
+      padding-left: 0.5em !important;
+    }
+
+    // Hide default label/placeholder mechanism
+    .mdc-floating-label {
+      display: none !important;
+    }
+  }
+
+  .glass-field.no-label {
+    .mat-mdc-text-field-wrapper {
+      padding: 0 16px !important;
+      background-color: rgba(248, 250, 252, 0.6) !important;
+      border: 1px solid rgba(203, 213, 225, 0.8) !important;
+      border-radius: 12px !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      align-items: center;
+      min-height: 52px; // Slightly more compact vertically since label is out
+    }
+
+    // Keep hiding outline
+    .mdc-notched-outline,
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border: none !important;
+    }
+
+    .mat-mdc-input-element {
+      margin-top: 0 !important; // Vertically center perfectly
+      margin-bottom: 0 !important;
+      padding: 14px 0 !important; // Balanced padding
+      font-family: 'Inter', sans-serif !important;
+      font-size: 1.05rem !important; // Slightly larger ease of read
+      color: $text-primary !important;
+      caret-color: $primary-blue;
+
+      &::placeholder {
+        color: #94a3b8 !important;
+        opacity: 0.8;
+        font-weight: 400;
+      }
+    }
+
+    // Textarea adjustments
+    textarea.mat-mdc-input-element {
+      padding: 14px 0 !important;
+      margin: 0 !important;
+    }
+
+    &.mat-focused .mat-mdc-text-field-wrapper {
+      background-color: #ffffff !important;
+      border-color: $primary-blue !important;
+      box-shadow: 0 4px 12px -2px rgba(59, 130, 246, 0.15);
+    }
+
+    &:hover:not(.mat-focused) .mat-mdc-text-field-wrapper {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      border-color: #cbd5e1 !important;
+    }
+  }
+}
+
+/* Upload Area */
+.upload-area {
+  position: relative;
+  border: 2px dashed rgba(203, 213, 225, 1);
+  border-radius: 20px;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: rgba(248, 250, 252, 0.4);
+  overflow: hidden;
+  cursor: pointer;
+
+  .upload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    .icon-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #eff6ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+
+      mat-icon {
+        font-size: 40px;
+        height: 40px;
+        width: 40px;
+        color: $primary-blue;
+      }
+    }
+
+    p {
+      color: $text-secondary;
+      font-size: 1rem;
+      margin: 0;
+
+      span {
+        color: $primary-blue;
+        font-weight: 600;
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background: currentColor;
+          opacity: 0.3;
+        }
+      }
+    }
+  }
+
+  &:hover {
+    background: #f8fafc;
+    border-color: $primary-blue;
+    transform: translateY(-2px);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .preview-container .remove-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+  }
+}
+
+/* Modality Chips */
+.modality-group {
+  display: flex;
+  gap: 12px;
+  background: transparent;
+  padding: 0;
+  border: none;
+  flex-wrap: wrap; // Allow wrapping if space is tight
+
+  .modality-chip {
+    flex: 1;
+    min-width: 100px; // Ensure readable width
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    background: rgba(255, 255, 255, 0.6);
+    padding: 1rem;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: $text-secondary;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100px;
+
+    // Mobile: Use full width if needed to prevent squashing
+    @media (max-width: 400px) {
+      min-width: 100%;
+      flex-direction: row; // Horizontal layout on very small screens to save vertical space
+      height: auto;
+      padding: 0.8rem;
+    }
+
+    mat-icon {
+      font-size: 28px;
+      height: 28px;
+      width: 28px;
+      opacity: 0.7;
+    }
+
+    span {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    &:hover {
+      border-color: $primary-blue;
+      color: $primary-blue;
+      background: white;
+
+      mat-icon {
+        opacity: 1;
+      }
+    }
+
+    &.active {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      border-color: transparent;
+      color: white;
+      box-shadow: 0 8px 16px -4px rgba(59, 130, 246, 0.4);
+      transform: translateY(-2px);
+
+      mat-icon {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/* Warnings */
+.info-bubble {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #ecfdf5;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: #047857;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+
+  mat-icon {
+    color: #10b981;
+  }
+
+  &.warning {
+    background: #fffbeb;
+    color: #b45309;
+
+    mat-icon {
+      color: #f59e0b;
+    }
+  }
+}
+
+/* Footer & Buttons */
+.sticky-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  box-sizing: border-box;
+  padding: 1.25rem 2.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.03);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  z-index: 1000;
+
+  .btn-secondary {
+    /* Styling Guardar Borrador to match aesthetics */
+    border: 1px solid rgba(203, 213, 225, 1) !important; // Slate border
+    color: $text-secondary !important;
+    font-weight: 500;
+    background: white;
+
+    &:hover {
+      background: #f8fafc;
+      border-color: #94a3b8 !important;
+      color: $text-primary !important;
+    }
+  }
+
+  // Explicit padding overrides for other buttons
+  button {
+    border-radius: 8px !important;
+    padding: 0 1.5rem !important;
+    height: 48px !important; // consistent height
+  }
+
+  @media (max-width: 600px) {
+    justify-content: space-between;
+    padding: 1rem;
+    gap: 0.75rem;
+    background: white;
+
+    button {
+      flex: 1;
+      padding: 0 0.5rem !important;
+      height: 44px !important;
+      font-size: 0.85rem;
+      min-width: 0; // allow shrink
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+}
+
+/* --- DARK MODE OVERRIDES (Midnight Glass) --- */
+:host.dark-theme {
+  // Use a deep dark background for the whole host
+  background-color: #0f172a;
+  background:
+    radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+    radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
+  min-height: 100vh; // Ensure it covers viewport
+
+  // Update header text gradient to specific white-cyan
+  .header .title-row h1 {
+    background: linear-gradient(to right, #fff, #a5f3fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  // Update Breadcrumbs
+  .header .breadcrumbs .crumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+
+    &.active {
+      color: #00f2ff; // Neon Cyan
+      background: rgba(0, 242, 255, 0.1);
+      border-color: rgba(0, 242, 255, 0.3);
+    }
+
+    &:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+  }
+
+  .header .breadcrumbs .separator {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  // Variables specific to dark mode
+  $dark-glass-panel: rgba(17, 25, 40, 0.75);
+  $dark-border: rgba(255, 255, 255, 0.1);
+  $neon-accent: #00f2ff;
+  $text-dark-primary: #ffffff;
+  $text-dark-secondary: rgba(255, 255, 255, 0.7);
+
+  // Panel Overrides
+  .glass-panel {
+    background: $dark-glass-panel;
+    border-color: $dark-border;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  // Field Labels
+  .field-label {
+    color: $text-dark-primary;
+  }
+
+  // Section Titles
+  .form-section-title {
+    color: $text-dark-primary;
+
+    mat-icon {
+      color: $neon-accent;
+      background: rgba(0, 242, 255, 0.1);
+    }
+  }
+
+  // Input Fields
+  ::ng-deep .glass-field.no-label {
+    .mat-mdc-text-field-wrapper {
+      background-color: rgba(255, 255, 255, 0.05) !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .mat-mdc-input-element {
+      color: white !important;
+      caret-color: $neon-accent;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.4) !important;
+      }
+    }
+
+    &.mat-focused .mat-mdc-text-field-wrapper {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba($neon-accent, 0.5) !important;
+      box-shadow: 0 0 15px rgba(0, 242, 255, 0.15);
+    }
+  }
+
+  // Upload Area
+  .upload-area {
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.02);
+
+    .upload-content {
+      .icon-circle {
+        background: rgba(255, 255, 255, 0.05);
+
+        mat-icon {
+          color: $neon-accent;
+        }
+      }
+
+      p {
+        color: $text-dark-secondary;
+      }
+
+      span {
+        color: $neon-accent;
+      }
+    }
+
+    &:hover {
+      border-color: $neon-accent;
+      background: rgba(0, 242, 255, 0.05);
+    }
+  }
+
+  // Modality Chips
+  .modality-group .modality-chip {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: $text-dark-secondary;
+
+    &:hover {
+      border-color: $neon-accent;
+      color: $neon-accent;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    &.active {
+      background: rgba(255, 255, 255, 0.1); // Keep it dark/glassy
+      color: white;
+      border-color: $neon-accent;
+      box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+    }
+  }
+
+  // Footer
+  .sticky-footer {
+    background: rgba(10, 10, 15, 0.85);
+    border-top-color: $dark-border;
+
+    // Invert button colors slightly for dark mode visibility
+    .btn-secondary {
+      background: transparent;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+      color: white !important;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: white !important;
+      }
+    }
+
+    // Mobile footer needs solid bg to cover content? 
+    // Or keep blurry dark.
+    @media (max-width: 600px) {
+      background: #0f172a; // Solid dark for mobile performance/readability
+    }
+  }
+
+  // Theme Toggle Button
+  .title-row button {
+    color: white;
+  }
+}

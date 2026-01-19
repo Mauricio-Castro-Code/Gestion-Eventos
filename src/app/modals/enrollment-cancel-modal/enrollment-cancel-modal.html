@@ -1,0 +1,15 @@
+<div class="glass-modal-content">
+    <h2>Cancelar Inscripción</h2>
+    <p>Estás a punto de cancelar la inscripción de <strong>{{data.student.name}}</strong>.</p>
+
+    <mat-form-field class="glass-input" appearance="outline">
+        <mat-label>Motivo de cancelación</mat-label>
+        <textarea matInput [(ngModel)]="reason" rows="4"
+            placeholder="Ej. No pudo asistir por motivos personales..."></textarea>
+    </mat-form-field>
+
+    <div class="actions">
+        <button mat-button (click)="close()">Regresar</button>
+        <button mat-flat-button color="warn" (click)="confirm()" [disabled]="!reason()">Confirmar Baja</button>
+    </div>
+</div>

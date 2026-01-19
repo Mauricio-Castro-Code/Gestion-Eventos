@@ -1,0 +1,75 @@
+<div class="events-page-container">
+    <!-- Header / Context -->
+    <div class="page-header">
+        <div class="header-content">
+            <div>
+                <h1 class="glass-title">Explorar Eventos</h1>
+                <p class="subtitle">Descubre, aprende y conecta con la comunidad.</p>
+            </div>
+            @if (userRole() !== 'student') {
+            <button class="btn-create-event" routerLink="/dashboard/events/new">
+                <span class="icon">+</span> Crear Evento
+            </button>
+            }
+        </div>
+    </div>
+
+    <!-- Smart Filter Container -->
+    <div class="filter-section">
+        <app-filter-bar-glass (filterChange)="onFilterChange($event)"></app-filter-bar-glass>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content-area">
+        @if (isLoading()) {
+        <!-- Skeleton Loading Grid -->
+        <div class="skeleton-grid">
+            @for (i of [1,2,3,4,5,6]; track i) {
+            <div class="glass-card-skeleton">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-text title"></div>
+                <div class="skeleton-text line"></div>
+                <div class="skeleton-footer"></div>
+            </div>
+            }
+        </div>
+        } @else {
+        @switch (userRole()) {
+        @case ('student') {
+        <div class="events-grid fade-in">
+            @for (event of filteredEvents(); track event.id) {
+            <div class="grid-item">
+                <app-event-card-glass [event]="event"></app-event-card-glass>
+            </div>
+            } @empty {
+            <div class="empty-state">
+                <i class="fas fa-search"></i>
+                <h3>No se encontraron eventos</h3>
+                <button (click)="onFilterChange('')">Limpiar Filtros</button>
+            </div>
+            }
+        </div>
+        }
+        @case ('organizer') {
+        <div class="events-table-view fade-in">
+            <app-event-table-glass [events]="filteredEvents()" title="Mis Eventos"></app-event-table-glass>
+        </div>
+        }
+        @case ('admin') {
+        <div class="events-table-view fade-in">
+            <app-event-table-glass [events]="filteredEvents()"
+                title="Gestión Global de Eventos"></app-event-table-glass>
+        </div>
+        }
+        @default {
+        <!-- Default fallback to grid -->
+        <div class="events-grid">
+            @for (event of filteredEvents(); track event.id) {
+            <app-event-card-glass [event]="event"></app-event-card-glass>
+            }
+        </div>
+        }
+        }
+        }
+    </div>
+</div>

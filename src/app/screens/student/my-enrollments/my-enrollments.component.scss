@@ -1,0 +1,512 @@
+// Variables mimicking Glassmorphism Proposal 1
+$glass-bg: rgba(255, 255, 255, 0.7);
+$glass-border: 1px solid rgba(255, 255, 255, 0.4);
+$glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+$blur: blur(12px);
+
+$primary-color: #3f51b5;
+$accent-color: #ff4081;
+$text-dark: #1a1a2e;
+$text-gray: #4a4a6a;
+
+// Animation
+.fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.enrollments-container {
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    min-height: 100vh;
+    box-sizing: border-box;
+
+    @media (max-width: 600px) {
+        padding: 1rem;
+    }
+}
+
+// 1. Header (Personal HUD)
+header.glass-hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .title-section {
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: $text-dark;
+            margin: 0;
+            letter-spacing: -0.5px;
+
+        }
+
+        .subtitle {
+            color: $text-gray;
+            margin: 0.25rem 0 0;
+            font-size: 1rem;
+        }
+    }
+
+    .stats-pills {
+        display: flex;
+        gap: 1rem;
+
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: $blur;
+            border: $glass-border;
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .label {
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: $text-gray;
+                font-weight: 600;
+            }
+
+            .value {
+                font-size: 1.5rem;
+                font-weight: 800;
+                line-height: 1.2;
+            }
+
+            &.active-glow {
+                border-color: rgba(76, 175, 80, 0.3);
+
+                .value {
+                    color: #2e7d32;
+                    text-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+                }
+            }
+
+            &.history-glow {
+                border-color: rgba(33, 150, 243, 0.3);
+
+                .value {
+                    color: #1565c0;
+                    text-shadow: 0 0 10px rgba(33, 150, 243, 0.2);
+                }
+            }
+        }
+    }
+}
+
+// 2. Navigation (Floating Tabs)
+nav.glass-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+
+    .segmented-control {
+        position: relative;
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(8px);
+        padding: 4px;
+        border-radius: 12px;
+        display: flex;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+
+        .tab-btn {
+            position: relative;
+            z-index: 2;
+            background: transparent;
+            border: none;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            color: $text-gray;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+
+            &.active {
+                color: $primary-color;
+            }
+        }
+
+        .glider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+
+            &.right {
+                transform: translateX(100%);
+            }
+        }
+    }
+}
+
+// 3. The List (Glass Tickets)
+.tickets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .glass-ticket {
+        display: flex;
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        // Left Stub
+        .ticket-stub {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 90px;
+            border-right: none;
+
+            .day {
+                font-size: 1.8rem;
+                font-weight: 800;
+                color: $text-dark;
+                line-height: 1;
+            }
+
+            .month {
+                font-size: 0.85rem;
+                font-weight: 700;
+                color: $accent-color;
+                margin-top: 4px;
+            }
+
+            .year {
+                font-size: 0.75rem;
+                color: $text-gray;
+                margin-top: 2px;
+            }
+        }
+
+        .dashed-divider {
+            width: 0;
+            border-left: 2px dashed rgba(0, 0, 0, 0.1);
+            position: relative;
+            margin: 1rem 0;
+
+            // Semi-circles for ticket effect
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                width: 16px;
+                height: 16px;
+                background: #f0f2f5; // Assumed body bg, ideally transparent
+                border-radius: 50%;
+                left: -9px;
+            }
+
+            &::before {
+                top: -24px;
+            }
+
+            &::after {
+                bottom: -24px;
+            }
+        }
+
+        .ticket-body {
+            flex: 1;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+
+            .info {
+                .event-title {
+                    margin: 0 0 0.5rem;
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                    color: $text-dark;
+                }
+
+                .meta-row {
+                    display: flex;
+                    gap: 1.5rem;
+                    color: $text-gray;
+                    font-size: 0.9rem;
+
+                    span {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+
+                        mat-icon {
+                            font-size: 18px;
+                            width: 18px;
+                            height: 18px;
+                        }
+                    }
+                }
+            }
+
+            .ticket-actions {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                .badge {
+                    padding: 6px 12px;
+                    border-radius: 6px;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                    border: 1px solid transparent;
+
+                    &.neon-green {
+                        color: #00c853;
+                        background: rgba(0, 200, 83, 0.1);
+                        border-color: rgba(0, 200, 83, 0.2);
+                        box-shadow: 0 0 8px rgba(0, 200, 83, 0.1);
+                    }
+
+                    &.neon-blue {
+                        color: #2979ff;
+                        background: rgba(41, 121, 255, 0.1);
+                        border-color: rgba(41, 121, 255, 0.2);
+                    }
+
+                    &.neon-red {
+                        color: #ff1744;
+                        background: rgba(255, 23, 68, 0.1);
+                        border-color: rgba(255, 23, 68, 0.2);
+                    }
+
+                    &.neon-gray {
+                        color: $text-gray;
+                        background: rgba(0, 0, 0, 0.05);
+                    }
+                }
+
+                .ghost-btn-red {
+                    color: #ff5252;
+                    background: rgba(255, 82, 82, 0.05);
+                    transition: all 0.2s;
+
+                    &:hover {
+                        background: rgba(255, 82, 82, 0.15);
+                        transform: scale(1.1);
+                    }
+                }
+            }
+        }
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 16px;
+
+        .illustration {
+            mat-icon {
+                font-size: 64px;
+                width: 64px;
+                height: 64px;
+                color: #cbd5e1;
+                margin-bottom: 1rem;
+            }
+        }
+
+        h3 {
+            margin-bottom: 0.5rem;
+            color: $text-dark;
+        }
+
+        p {
+            color: $text-gray;
+            margin-bottom: 2rem;
+        }
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    header.glass-hud {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+
+        .title-section {
+            width: 100%;
+
+            h1 {
+                line-height: 1.3;
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+
+    .tickets-list .glass-ticket {
+        flex-direction: column;
+
+        .ticket-stub {
+            flex-direction: row;
+            justify-content: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+
+            .day {
+                font-size: 1.5rem;
+            }
+
+            .month {
+                margin-top: 0;
+            }
+        }
+
+        .dashed-divider {
+            display: none;
+        }
+
+        .ticket-body {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 1rem;
+
+            .ticket-actions {
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 1rem;
+                border-top: 1px solid rgba(0, 0, 0, 0.05);
+                padding-top: 1rem;
+            }
+        }
+    }
+}
+
+// Cancellation Modal
+.glass-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.glass-modal {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    padding: 2.5rem;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    text-align: center;
+
+    .modal-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 1.5rem;
+        border-radius: 50%;
+        background: rgba(255, 152, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        mat-icon {
+            color: #f57c00;
+            font-size: 32px;
+            width: 32px;
+            height: 32px;
+        }
+
+        &.warning-glow {
+            box-shadow: 0 0 20px rgba(255, 152, 0, 0.2);
+        }
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: $text-dark;
+    }
+
+    p {
+        color: $text-gray;
+        margin-bottom: 2rem;
+        line-height: 1.5;
+    }
+
+    .reason-input {
+        width: 100%;
+        margin-bottom: 1.5rem;
+        text-align: left;
+
+        ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+            display: none; // Hide hints/errors space if not used to compact
+        }
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+
+        button {
+            flex: 1;
+        }
+    }
+}

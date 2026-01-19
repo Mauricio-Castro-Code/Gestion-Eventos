@@ -1,0 +1,76 @@
+<div class="kpi-hud">
+    <div class="title-section">
+        <h2>Gestión de Inscripciones</h2>
+        <span>Evento: Workshop de Diseño UX/UI</span>
+    </div>
+
+    <div class="metrics-row">
+        <div class="metric inscritos">
+            <label>Inscritos</label>
+            <span class="value">{{ totalInscritos() }}</span>
+        </div>
+        <div class="metric cupo">
+            <label>Cupo</label>
+            <span class="value">{{ cupo() }}</span>
+        </div>
+        <div class="metric asistieron">
+            <label>Asistieron</label>
+            <span class="value">{{ totalAsistieron() }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="enrollment-list">
+    @for (student of students(); track student.id) {
+    @if (student.status !== 'cancelled') {
+    <div class="student-row">
+
+        <!-- Group Avatar & Info for Mobile Flex, use display:contents for Desktop Grid -->
+        <div class="profile-group">
+            <div class="avatar">
+                @if (student.avatarUrl) {
+                <img [src]="student.avatarUrl" [alt]="student.name">
+                } @else {
+                {{ student.name.charAt(0) }}
+                }
+            </div>
+            <div class="info-col">
+                <div class="name">{{ student.name }}</div>
+                <div class="email">{{ student.email }}</div>
+            </div>
+        </div>
+
+        <div class="date-col">
+            {{ student.enrolledAt | date:'d MMM y' }}
+        </div>
+
+        <div class="status-badge" [class.confirmed]="student.status === 'confirmed'">
+            {{ getStatusLabel(student.status) }}
+        </div>
+
+        <div class="toggle-col">
+            <label>
+                <input type="checkbox" class="neon-switch" [checked]="student.attended"
+                    (change)="toggleAttendance(student.id, student.attended)">
+            </label>
+        </div>
+
+        <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openCancelModal(student)">
+                <mat-icon>block</mat-icon>
+                <span>Cancelar Inscripción</span>
+            </button>
+        </mat-menu>
+    </div>
+    }
+    }
+    @empty {
+    <div class="empty-state">
+        <p>No hay estudiantes inscritos aún.</p>
+    </div>
+    }
+</div>

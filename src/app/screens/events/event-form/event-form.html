@@ -1,0 +1,191 @@
+<div class="header">
+    <div class="breadcrumbs">
+        <a routerLink="/dashboard/events" class="crumb">Eventos</a>
+        <span class="separator">/</span>
+        <span class="crumb active">{{ isEditMode() ? 'Editar' : 'Nuevo' }}</span>
+    </div>
+
+    <div class="title-row">
+        <h1>{{ isEditMode() ? form.controls.title.value : 'Crear Nuevo Evento' }}</h1>
+
+        @if (isEditMode()) {
+        <div class="status-badge">
+            <div class="pulse-dot"></div>
+            <span>Editando</span>
+        </div>
+        }
+
+        <button mat-icon-button (click)="toggleTheme()" [matTooltip]="isDarkMode() ? 'Modo Claro' : 'Modo Oscuro'">
+            <mat-icon>{{ isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        </button>
+    </div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="form.valid && null" class="editor-layout">
+
+    <!-- LEFT PANEL: CONTENT -->
+    <section class="glass-panel left-panel">
+
+        <div class="form-section-title">
+            <mat-icon>edit_note</mat-icon> Detalles del Evento
+        </div>
+
+        <!-- Title Input -->
+        <div class="field-container">
+            <label class="field-label">Título del Evento</label>
+            <mat-form-field appearance="outline" class="glass-field no-label">
+                <input matInput formControlName="title" placeholder="Ej. Hackathon de Innovación 2024">
+                <mat-error *ngIf="form.get('title')?.hasError('required')">El título es requerido</mat-error>
+                <mat-error *ngIf="form.get('title')?.hasError('minlength')">Mínimo 5 caracteres</mat-error>
+            </mat-form-field>
+        </div>
+
+        <!-- Description Input -->
+        <div class="field-container">
+            <label class="field-label">Descripción Completa</label>
+            <mat-form-field appearance="outline" class="glass-field no-label">
+                <textarea matInput formControlName="description" rows="6"
+                    placeholder="Describe los detalles, agenda y objetivos..."></textarea>
+                <mat-error *ngIf="form.get('description')?.hasError('required')">La descripción es requerida</mat-error>
+                <mat-error *ngIf="form.get('description')?.hasError('minlength')">Mínimo 50 caracteres</mat-error>
+            </mat-form-field>
+        </div>
+
+        <!-- Upload Area -->
+        <div class="field-container">
+            <label class="field-label">Portada</label>
+            <div class="upload-area" [class.drag-active]="isDragOver()" (dragover)="onDragOver($event)"
+                (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+                <input type="file" (change)="onFileSelected($event)" accept="image/*">
+
+                @if (previewImage()) {
+                <div class="preview-container">
+                    <img [src]="previewImage()" alt="Cover Preview">
+                    <button mat-mini-fab color="warn" class="remove-btn"
+                        (click)="previewImage.set(null); $event.stopPropagation(); $event.preventDefault()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+                } @else {
+                <div class="upload-content">
+                    <div class="icon-circle">
+                        <mat-icon>cloud_upload</mat-icon>
+                    </div>
+                    <p>Arrastra tu imagen aquí o <span>haz clic para explorar</span></p>
+                </div>
+                }
+            </div>
+        </div>
+
+        <!-- Extras Grid -->
+        <div class="extras-grid">
+            <div class="field-container">
+                <label class="field-label">Requisitos (Opcional)</label>
+                <mat-form-field appearance="outline" class="glass-field no-label">
+                    <input matInput formControlName="requirements" placeholder="Ej. Laptop, Conocimientos básicos">
+                </mat-form-field>
+            </div>
+
+            <div class="field-container">
+                <label class="field-label">Material de Apoyo (URL)</label>
+                <mat-form-field appearance="outline" class="glass-field no-label">
+                    <input matInput formControlName="materials" placeholder="https://...">
+                    <mat-icon matSuffix>link</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+    </section>
+
+    <!-- RIGHT PANEL: LOGISTICS -->
+    <section class="glass-panel right-panel">
+
+        <div class="form-section-title">
+            <mat-icon>settings</mat-icon> Logística
+        </div>
+
+        <!-- Category -->
+        <div class="field-container">
+            <label class="field-label">Categoría</label>
+            <mat-form-field appearance="outline" class="glass-field no-label">
+                <mat-select formControlName="category" placeholder="Selecciona una opción">
+                    @for (cat of categories; track cat) {
+                    <mat-option [value]="cat">{{ cat }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <!-- Modality (Chips) -->
+        <div class="field-container">
+            <label class="field-label">Modalidad</label>
+            <div class="modality-group">
+                @for (mode of modalities; track mode.id) {
+                <button type="button" class="modality-chip" [class.active]="form.get('modality')?.value === mode.id"
+                    (click)="setModality(mode.id)">
+                    <mat-icon>{{ mode.icon }}</mat-icon>
+                    <span>{{ mode.label }}</span>
+                </button>
+                }
+            </div>
+        </div>
+
+        <!-- Venue -->
+        <div class="field-container">
+            <label class="field-label">Sede (Venue)</label>
+            <mat-form-field appearance="outline" class="glass-field no-label">
+                <mat-select formControlName="venueId" placeholder="Selecciona lugar">
+                    @for (venue of venues; track venue.id) {
+                    <mat-option [value]="venue.id">{{ venue.name }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+            @if (selectedVenueId()) {
+            <div class="info-bubble">
+                <mat-icon style="font-size: 18px; height: 18px; width: 18px;">info</mat-icon>
+                <span>Capacidad Real: <strong>{{ venueCapacity() }} personas</strong></span>
+            </div>
+            }
+        </div>
+
+        <!-- Dates -->
+        <div class="field-container">
+            <label class="field-label">Rango de Fechas</label>
+            <mat-form-field appearance="outline" class="glass-field no-label">
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate formControlName="startDate" placeholder="Inicio">
+                    <input matEndDate formControlName="endDate" placeholder="Fin">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <mat-error *ngIf="form.hasError('dateRangeInvalid')">La fecha fin debe ser mayor a inicio</mat-error>
+            </mat-form-field>
+        </div>
+
+        <!-- Capacity Warning -->
+        <div class="field-container">
+            <label class="field-label">Cupo Máximo</label>
+            <mat-form-field appearance="outline" class="glass-field no-label">
+                <input matInput type="number" formControlName="capacity" placeholder="0">
+                <mat-icon matSuffix *ngIf="isOverCapacity()" color="warn">warning</mat-icon>
+            </mat-form-field>
+
+            @if (isOverCapacity()) {
+            <div class="info-bubble warning">
+                <mat-icon style="font-size: 18px; height: 18px; width: 18px;">warning</mat-icon>
+                <span>Advertencia: Sobrecupo (Máx: {{ venueCapacity() }})</span>
+            </div>
+            }
+        </div>
+
+    </section>
+</form>
+
+<footer class="sticky-footer">
+    <button mat-button class="btn-cancel" routerLink="/dashboard/events">Cancelar</button>
+    <button mat-stroked-button class="btn-secondary">Guardar Borrador</button>
+    <button mat-raised-button color="primary" [disabled]="form.invalid || form.pristine"
+        [matTooltip]="form.invalid ? 'Completa los campos requeridos' : 'Publicar Evento'">
+        Publicar Evento
+    </button>
+</footer>

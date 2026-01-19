@@ -1,0 +1,101 @@
+/* Sidebar Styles (Extracted) */
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+
+    &::-webkit-scrollbar {
+        display: none;
+        /* Chrome, Safari, Opera */
+    }
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+
+    .logo-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #1A237E 0%, #3949AB 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-right: 10px;
+        color: white;
+        box-shadow: 0 4px 10px rgba(26, 35, 126, 0.2);
+    }
+
+    .logo-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #F8FAFC;
+        /* Light color for contrast on dark sidebar */
+    }
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .nav-item {
+        justify-content: flex-start;
+        color: rgba(255, 255, 255, 0.7);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+
+        mat-icon {
+            margin-right: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        &:hover,
+        &.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+
+            mat-icon {
+                color: white;
+            }
+        }
+
+        &.active {
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+    }
+}
+
+.role-switcher {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+
+    p {
+        margin-bottom: 10px;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    button {
+        color: rgba(255, 255, 255, 0.6);
+
+        &:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+    }
+}

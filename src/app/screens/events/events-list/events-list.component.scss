@@ -1,0 +1,219 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    padding: 2rem;
+    /* Transparent background to blend with Dashboard */
+    background: transparent;
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
+}
+
+.events-page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.page-header {
+    margin-bottom: 2.5rem;
+    position: relative;
+    padding-top: 1rem;
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .glass-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
+        padding-bottom: 0.2rem;
+    }
+
+    .subtitle {
+        color: #64748b;
+        font-size: 1.1rem;
+    }
+
+    // New Create Event Button Styles
+    .btn-create-event {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        text-decoration: none; // in case it behaves as link
+
+        .icon {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .header-content {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .glass-title {
+            font-size: 2rem;
+        }
+
+        .btn-create-event {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+}
+
+.filter-section {
+    position: sticky;
+    top: 1rem;
+    z-index: 100;
+    margin-bottom: 2rem;
+}
+
+/* Grid Layout */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    padding-bottom: 3rem;
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Skeletons */
+.skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.glass-card-skeleton {
+    height: 400px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+
+    .skeleton-img {
+        height: 200px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        animation: pulse 1.5s infinite;
+    }
+
+    .skeleton-text {
+        height: 20px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+        animation: pulse 1.5s infinite;
+
+        &.title {
+            width: 70%;
+            height: 28px;
+        }
+
+        &.line {
+            width: 40%;
+        }
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    color: #64748b;
+
+    i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    h3 {
+        margin-bottom: 1rem;
+    }
+
+    button {
+        padding: 0.5rem 1rem;
+        background: white;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+    }
+}

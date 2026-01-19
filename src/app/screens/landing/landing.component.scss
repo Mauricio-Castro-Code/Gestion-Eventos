@@ -1,0 +1,541 @@
+// Variables
+$navy-blue: #1A237E;
+$slate-gray: #64748B;
+$primary-gradient: linear-gradient(135deg, #1A237E 0%, #3949AB 100%);
+$vibrant-gradient: linear-gradient(135deg, #7C4DFF 0%, #00BFA5 100%); // New vibrant gradient
+$white-glass: rgba(255, 255, 255, 0.65);
+$white-border: rgba(255, 255, 255, 0.8);
+$shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.05);
+
+// Mixins
+@mixin glass-surface {
+    background: $white-glass;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid $white-border;
+    border-radius: 24px;
+    box-shadow: $shadow-soft;
+}
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:host {
+    display: block;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: $slate-gray;
+}
+
+.landing-container {
+    min-height: 100vh;
+    width: 100%;
+    // Enhanced Vibrant Mesh Gradient
+    background:
+        radial-gradient(at 0% 0%, rgba(124, 77, 255, 0.15) 0, transparent 50%), // Purple hint
+        radial-gradient(at 100% 0%, rgba(0, 191, 165, 0.15) 0, transparent 50%), // Teal hint
+        radial-gradient(at 50% 100%, #F8FAFC 0, transparent 50%),
+        #FFFFFF;
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+// Typography Overrides
+h1,
+h2,
+h3,
+h4 {
+    color: $navy-blue;
+    font-weight: 700;
+    margin-bottom: 0.5em;
+    line-height: 1.2;
+}
+
+p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+// Text Gradient Utility
+.text-gradient {
+    background: $primary-gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    position: relative;
+
+    // Apply gradient to title text
+    background: $primary-gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    width: 100%; // Ensure center alignment works
+
+    &::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: $vibrant-gradient; // Vibrant underscore
+        margin: 10px auto 0;
+        border-radius: 2px;
+    }
+}
+
+// Navbar
+.navbar {
+    @include glass-surface;
+    position: sticky;
+    top: 20px;
+    margin: 0 20px;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    border-radius: 100px;
+
+    .logo {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: $navy-blue;
+        letter-spacing: -1px;
+    }
+
+    .nav-links {
+        display: none;
+        gap: 2rem;
+
+        @media (min-width: 768px) {
+            display: flex;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: $slate-gray;
+            font-weight: 500;
+            transition: color 0.3s;
+
+            &:hover {
+                color: $navy-blue;
+            }
+        }
+    }
+
+    .nav-actions {
+        display: flex;
+        gap: 1rem;
+
+        // Hide buttons on very small screens if needed, or adjust padding
+    }
+}
+
+// Buttons
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    &.btn-ghost {
+        background: transparent;
+        color: $navy-blue;
+
+        &:hover {
+            background: rgba($navy-blue, 0.05);
+        }
+    }
+
+    &.btn-primary-gradient {
+        background: $primary-gradient;
+        color: white;
+        box-shadow: 0 4px 15px rgba(26, 35, 126, 0.3);
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 35, 126, 0.4);
+        }
+    }
+
+    &.btn-outline {
+        background: transparent;
+        border: 2px solid $navy-blue;
+        color: $navy-blue;
+
+        &:hover {
+            background: $navy-blue;
+            color: white;
+        }
+    }
+
+    &.btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    &.btn-lg {
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+    }
+
+    &.btn-full {
+        width: 100%;
+    }
+}
+
+// Hero Section
+.hero-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 8rem 20px 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+
+    @media (min-width: 992px) {
+        grid-template-columns: 1.2fr 1fr;
+        padding: 10rem 20px 6rem;
+    }
+
+    // Mobile Optimization (Max Width 768px)
+    @media (max-width: 768px) {
+        text-align: center; // Center all text
+        padding-top: 6rem; // Reduced top padding
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .hero-title {
+                font-size: 2.5rem; // Smaller title
+            }
+
+            .hero-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+                flex-direction: column; // Stack buttons vertically
+                width: 100%;
+                gap: 1rem;
+
+                .btn {
+                    width: 100%; // Full width buttons on mobile
+                }
+            }
+        }
+    }
+
+    .hero-content {
+        .hero-title {
+            font-size: 3rem;
+
+            @media (min-width: 768px) {
+                font-size: 4rem;
+            }
+
+            .highlight {
+                color: transparent;
+                background-clip: text;
+                background-image: $vibrant-gradient; // Use vibrant gradient
+                -webkit-background-clip: text;
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+    }
+
+    // New Hero Visual Composition
+    .hero-visual {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        height: 400px;
+        @include flex-center;
+
+        .floating-composition {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            @include flex-center;
+        }
+
+        .glass-shield {
+            @include glass-surface;
+            width: 180px;
+            height: 220px;
+            @include flex-center;
+            z-index: 2;
+            border-radius: 30px; // Shield-ish soft round
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%);
+
+            .shield-icon {
+                font-size: 80px;
+                width: 80px;
+                height: 80px;
+                color: $navy-blue;
+                opacity: 0.8;
+            }
+        }
+
+        .glass-circle {
+            @include glass-surface;
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            @include flex-center;
+            z-index: 3;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+            mat-icon {
+                color: $navy-blue;
+                font-size: 32px;
+                width: 32px;
+                height: 32px;
+            }
+        }
+
+        // Positioning and Animation
+        .item-1 {
+            top: 20px;
+            left: 0px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .item-2 {
+            bottom: 60px;
+            right: -20px;
+            animation: float 5s ease-in-out infinite 0.5s;
+        }
+
+        .item-3 {
+            top: 40px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            animation: float 3.5s ease-in-out infinite 1s;
+
+            mat-icon {
+                font-size: 24px;
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+}
+
+// Section Globals
+section {
+    padding: 5rem 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+// Events Section
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+
+    .event-card {
+        @include glass-surface;
+        padding: 0; // Reset padding for image
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden; // For image radius
+
+        &:hover {
+            transform: translateY(-5px);
+        }
+
+        .event-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+
+            .card-status {
+                font-size: 0.75rem;
+                font-weight: 700;
+                color: #059669;
+                background: #d1fae5;
+                padding: 0.25rem 0.75rem;
+                border-radius: 12px;
+                align-self: flex-start;
+                margin-bottom: 1rem;
+            }
+
+            .event-title {
+                font-size: 1.25rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .event-date {
+                color: $slate-gray;
+                font-weight: 500;
+                margin-bottom: 2rem;
+            }
+
+            .btn-text {
+                margin-top: auto;
+                background: none;
+                border: none;
+                color: $navy-blue;
+                font-weight: 700;
+                padding: 0;
+                cursor: pointer;
+                text-align: left;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+// Benefits Section
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+
+    .benefit-item {
+        @include glass-surface;
+        padding: 2.5rem;
+        text-align: center;
+
+        .icon-box {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            @include flex-center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+    }
+}
+
+// FAQ Section
+.accordion {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .faq-item {
+        @include glass-surface;
+        overflow: hidden;
+        transition: all 0.3s ease;
+
+        &.active {
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        .faq-question {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: $navy-blue;
+            cursor: pointer;
+            text-align: left;
+
+            .toggle-icon {
+                font-size: 1.5rem;
+                font-weight: 400;
+            }
+        }
+
+        .faq-answer {
+            padding: 0 2rem 1.5rem;
+            color: $slate-gray;
+        }
+    }
+}
+
+// Footer
+.footer {
+    @include glass-surface;
+    margin: 4rem 20px 2rem;
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    border-radius: 20px;
+}
+
+// Animations
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
