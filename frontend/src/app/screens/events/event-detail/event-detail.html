@@ -1,0 +1,62 @@
+<div class="detail-page">
+  <div class="top-nav">
+    <a routerLink="/catalog">← Volver al catálogo</a>
+    <div class="auth-links">
+      <a routerLink="/auth/login">Ingresar</a>
+      <a routerLink="/auth/register">Crear cuenta</a>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+  <div class="state-box">Cargando detalle del evento...</div>
+  } @else if (serverError()) {
+  <div class="state-box error">{{ serverError() }}</div>
+  } @else if (event(); as item) {
+  <article class="detail-card">
+    <img
+      [src]="item.image_url || 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1200'"
+      [alt]="item.title"
+      class="hero-image"
+    />
+
+    <div class="content">
+      <div class="header">
+        <h1>{{ item.title }}</h1>
+        <span class="status">{{ item.statusLabel || item.status }}</span>
+      </div>
+
+      <p class="description">{{ item.description || 'Sin descripción disponible.' }}</p>
+
+      <div class="grid">
+        <div><strong>Organizador:</strong> {{ item.organizer_name || 'Sin organizador' }}</div>
+        <div><strong>Categoría:</strong> {{ item.category_name || 'Sin categoría' }}</div>
+        <div><strong>Sede:</strong> {{ item.venue_name || 'Sin sede' }}</div>
+        <div><strong>Modalidad:</strong> {{ item.modality }}</div>
+        <div><strong>Inicio:</strong> {{ item.start_datetime | date:'full' }}</div>
+        <div><strong>Fin:</strong> {{ item.end_datetime | date:'full' }}</div>
+        <div>
+          <strong>Registro hasta:</strong>
+          {{ item.registration_deadline ? (item.registration_deadline | date:'full') : 'Sin límite' }}
+        </div>
+        <div><strong>Cupo máximo:</strong> {{ item.max_capacity }}</div>
+        <div><strong>Inscritos:</strong> {{ item.attendees ?? item.enrolled_count ?? 0 }}</div>
+        <div><strong>Lugares disponibles:</strong> {{ item.available_slots ?? 0 }}</div>
+      </div>
+
+      <div class="section">
+        <h3>Requisitos</h3>
+        <p>{{ item.requirements || 'No se registraron requisitos.' }}</p>
+      </div>
+
+      <div class="section">
+        <h3>Material de apoyo</h3>
+        @if (item.materials_url) {
+        <a [href]="item.materials_url" target="_blank" rel="noopener noreferrer">{{ item.materials_url }}</a>
+        } @else {
+        <p>No disponible.</p>
+        }
+      </div>
+    </div>
+  </article>
+  }
+</div>

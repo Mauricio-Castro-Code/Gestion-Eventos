@@ -1,0 +1,122 @@
+<section class="users-page">
+  <header class="page-header">
+    <div>
+      <h2>Usuarios Registrados</h2>
+      @if (isAdmin()) {
+      <p>Admin puede editar o eliminar solo organizadores y estudiantes.</p>
+      } @else if (isOrganizer()) {
+      <p>Vista de solo lectura para organizador.</p>
+      } @else {
+      <p>No tienes permisos de gestión.</p>
+      }
+    </div>
+    <button mat-stroked-button type="button" (click)="loadUsers()" [disabled]="isLoading()">
+      {{ isLoading() ? 'Actualizando...' : 'Actualizar' }}
+    </button>
+  </header>
+
+  @if (serverError()) {
+  <div class="feedback error">{{ serverError() }}</div>
+  }
+
+  <div class="toolbar">
+    <input
+      type="search"
+      placeholder="Buscar por nombre, usuario, correo o rol..."
+      (input)="onSearch($event)"
+    />
+  </div>
+
+  @if (isLoading()) {
+  <div class="feedback">Cargando usuarios...</div>
+  } @else if (filteredUsers().length === 0) {
+  <div class="feedback">No se encontraron usuarios.</div>
+  } @else {
+  <div class="users-list">
+    @for (user of filteredUsers(); track user.id) {
+    <article class="user-card">
+      <div class="main-row">
+        <div class="identity">
+          <h3>{{ displayName(user) }}</h3>
+          <p>{{ user.email }}</p>
+          <p class="username">{{ user.username }}</p>
+        </div>
+
+        <div class="meta">
+          <span class="badge role">{{ displayRole(user.role) }}</span>
+          <span class="badge" [class.active]="user.is_active" [class.inactive]="!user.is_active">
+            {{ user.is_active ? 'Activo' : 'Inactivo' }}
+          </span>
+        </div>
+
+        <div class="actions">
+          @if (canManageUser(user)) {
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="beginEdit(user)"
+            [disabled]="deletingUserId() === user.id"
+          >
+            Editar
+          </button>
+          <button
+            mat-flat-button
+            color="warn"
+            type="button"
+            (click)="deleteUser(user)"
+            [disabled]="deletingUserId() === user.id"
+          >
+            {{ deletingUserId() === user.id ? 'Eliminando...' : 'Eliminar' }}
+          </button>
+          } @else {
+          <span class="read-only">Solo lectura</span>
+          }
+        </div>
+      </div>
+
+      @if (editingUserId() === user.id && canManageUser(user)) {
+      <form class="edit-form" [formGroup]="form" (ngSubmit)="saveEdit(user)">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="first_name" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Apellido</mat-label>
+          <input matInput formControlName="last_name" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Rol</mat-label>
+          <mat-select formControlName="role">
+            <mat-option value="organizer">Organizador</mat-option>
+            <mat-option value="student">Estudiante</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Estado</mat-label>
+          <mat-select formControlName="is_active">
+            <mat-option [value]="true">Activo</mat-option>
+            <mat-option [value]="false">Inactivo</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            [disabled]="savingUserId() === user.id"
+          >
+            {{ savingUserId() === user.id ? 'Guardando...' : 'Guardar' }}
+          </button>
+          <button mat-stroked-button type="button" (click)="cancelEdit()">Cancelar</button>
+        </div>
+      </form>
+      }
+    </article>
+    }
+  </div>
+  }
+</section>

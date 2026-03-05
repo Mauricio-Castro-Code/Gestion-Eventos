@@ -1,0 +1,16 @@
+<div class="left-section">
+    <button mat-icon-button (click)="onToggleSidebar()">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <div class="breadcrumbs">
+        <span>Home</span> <mat-icon>chevron_right</mat-icon> <span class="current">Dashboard</span>
+    </div>
+</div>
+<div class="right-section">
+    <button mat-icon-button>
+        <mat-icon>notifications</mat-icon>
+    </button>
+    <div class="user-avatar" [attr.title]="user()?.username || 'Usuario'">
+        <span>{{ userInitials() }}</span>
+    </div>
+</div>

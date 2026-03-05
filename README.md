@@ -56,22 +56,38 @@ Vista personal para los asistentes.
 
 ---
 
+## 🗂️ Estructura del Proyecto
+
+El proyecto está separado en dos carpetas principales:
+
+- `frontend/` → aplicación Angular
+- `backend/` → API Django + DRF
+
+---
+
 ## 🛠️ Cómo Ejecutar el Proyecto
 
-1. **Instalar dependencias**:
-   ```bash
-   npm install
-   ```
+### 1) Backend (Django)
 
-2. **Iniciar servidor de desarrollo**:
-   ```bash
-   npm start
-   # o
-   ng serve
-   ```
+```bash
+cd backend
+source .venv/bin/activate
+python manage.py runserver
+```
 
-3. **Acceder**:
-   Navega a `http://localhost:4200/` en tu navegador.
+API disponible en `http://127.0.0.1:8000/`
+
+### 2) Frontend (Angular)
+
+```bash
+cd frontend
+npm install
+npm start
+# o
+ng serve -o
+```
+
+Frontend disponible en `http://localhost:4200/`
 
 ---
 

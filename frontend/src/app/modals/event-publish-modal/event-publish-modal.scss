@@ -1,0 +1,22 @@
+.content {
+  display: grid;
+  gap: 12px;
+  min-width: min(520px, 90vw);
+  padding-top: 8px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.date-time-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 680px) {
+  .date-time-row {
+    grid-template-columns: 1fr;
+  }
+}

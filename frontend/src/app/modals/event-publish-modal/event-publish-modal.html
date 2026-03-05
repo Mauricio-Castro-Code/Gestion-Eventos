@@ -1,0 +1,96 @@
+<h2 mat-dialog-title>{{ data.mode === 'create' ? 'Nuevo Evento' : 'Editar Evento' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content class="content">
+    <mat-form-field appearance="outline">
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="title" placeholder="Ej. Conferencia de Innovación" />
+      <mat-error *ngIf="form.get('title')?.hasError('required')">Título requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        rows="3"
+        placeholder="Describe el evento..."
+      ></textarea>
+      <mat-error *ngIf="form.get('description')?.hasError('required')">Descripción requerida</mat-error>
+      <mat-error *ngIf="form.get('description')?.hasError('minlength')">
+        Mínimo 10 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    @if (canAssignOrganizer) {
+    <mat-form-field appearance="outline">
+      <mat-label>Organizador asignado</mat-label>
+      <mat-select formControlName="organizer">
+        @for (organizer of data.organizers; track organizer.id) {
+          <mat-option [value]="organizer.id">{{ organizerLabel(organizer) }}</mat-option>
+        }
+      </mat-select>
+      <mat-error *ngIf="form.get('organizer')?.hasError('required')">
+        Debes seleccionar un organizador
+      </mat-error>
+    </mat-form-field>
+    }
+
+    <mat-form-field appearance="outline">
+      <mat-label>Categoría</mat-label>
+      <mat-select formControlName="category">
+        @for (category of data.categories; track category.id) {
+          <mat-option [value]="category.id">{{ category.name }}</mat-option>
+        }
+      </mat-select>
+      <mat-error *ngIf="form.get('category')?.hasError('required')">Categoría requerida</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Venue / Sede</mat-label>
+      <mat-select formControlName="venue">
+        @for (venue of data.venues; track venue.id) {
+          <mat-option [value]="venue.id">{{ venue.name }} ({{ venue.capacity }})</mat-option>
+        }
+      </mat-select>
+      <mat-error *ngIf="form.get('venue')?.hasError('required')">Venue requerida</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cupos disponibles</mat-label>
+      <input matInput formControlName="max_capacity" type="number" min="1" />
+      <mat-error *ngIf="form.get('max_capacity')?.hasError('required')">Cupo requerido</mat-error>
+      <mat-error *ngIf="form.get('max_capacity')?.hasError('min')">Debe ser mayor a 0</mat-error>
+    </mat-form-field>
+
+    <div class="date-time-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha del evento</mat-label>
+        <input matInput type="date" formControlName="eventDate" />
+        <mat-error *ngIf="form.get('eventDate')?.hasError('required')">Fecha requerida</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Hora del evento</mat-label>
+        <input matInput type="time" formControlName="eventTime" />
+        <mat-error *ngIf="form.get('eventTime')?.hasError('required')">Hora requerida</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="status">
+        @for (status of statuses; track status.value) {
+          <mat-option [value]="status.value">{{ status.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+    <button mat-flat-button color="primary" type="submit">
+      {{ data.mode === 'create' ? 'Crear' : 'Guardar' }}
+    </button>
+  </mat-dialog-actions>
+</form>

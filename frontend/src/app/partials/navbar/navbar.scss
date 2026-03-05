@@ -1,0 +1,75 @@
+/* Navbar Styles (Extracted from Dashboard) */
+$slate-gray: #64748B;
+$navy-blue: #1A237E;
+$text-primary: $navy-blue;
+$text-secondary: $slate-gray;
+$white-border: rgba(255, 255, 255, 0.8);
+
+:host {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+    padding: 0 20px;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid $white-border;
+    width: 100%;
+    box-sizing: border-box;
+    /* Fix: Include padding in width calculation */
+}
+
+.left-section,
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    color: $text-secondary;
+    font-size: 0.9rem;
+
+    mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        margin: 0 5px;
+    }
+
+    .current {
+        color: $text-primary;
+        font-weight: 600;
+    }
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background: linear-gradient(135deg, #1A237E 0%, #3949AB 100%);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+
+    span {
+        color: #fff;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+    }
+
+    &:hover {
+        transform: scale(1.08);
+    }
+}
+
+button {
+    color: $text-secondary;
+}

@@ -1,0 +1,32 @@
+<div class="sidebar-header">
+    <div class="logo-circle">G</div>
+    <span class="logo-text">GTEA</span>
+</div>
+
+<div class="nav-links">
+    @for (item of navItems(); track item.label) {
+    <a mat-button class="nav-item" [routerLink]="item.link" routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: item.link === '/dashboard'}" [class.disabled]="!item.link">
+        <mat-icon>{{ item.icon }}</mat-icon> {{ item.label }}
+    </a>
+    }
+</div>
+
+@if (activeEvents().length > 0) {
+<div class="active-events">
+    <p class="active-events-title">Eventos Activos</p>
+    @for (event of activeEvents(); track event.id) {
+    <a class="active-event-link" [routerLink]="eventLink(event.id)" [matTooltip]="event.title">
+        <span class="dot"></span>
+        <span class="name">{{ event.title }}</span>
+    </a>
+    }
+</div>
+}
+
+<div class="logout-section">
+    <button mat-button class="logout-btn" (click)="onLogout()">
+        <mat-icon>logout</mat-icon>
+        Cerrar sesión
+    </button>
+</div>

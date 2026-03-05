@@ -1,0 +1,64 @@
+<div class="catalog-page">
+  <header class="catalog-header">
+    <div>
+      <h1>Catálogo de Eventos</h1>
+      <p>Listado completo de eventos visibles para tu perfil.</p>
+    </div>
+    <div class="actions">
+      @if (isAuthenticated()) {
+      <a routerLink="/">Inicio</a>
+      <a routerLink="/dashboard">Dashboard</a>
+      } @else {
+      <a routerLink="/">Inicio</a>
+      <a routerLink="/auth/login" [queryParams]="{ returnUrl: '/catalog' }">Ingresar</a>
+      <a class="btn-register" routerLink="/auth/register">Crear Cuenta</a>
+      }
+    </div>
+  </header>
+
+  @if (serverError()) {
+  <div class="state-box error-box">{{ serverError() }}</div>
+  }
+
+  <div class="search-box">
+    <input
+      type="text"
+      placeholder="Buscar por título, categoría o sede..."
+      (input)="onSearch($event)"
+    />
+  </div>
+
+  @if (isLoading()) {
+  <div class="state-box">Cargando eventos...</div>
+  } @else if (filteredEvents().length === 0) {
+  <div class="state-box">No hay eventos programados por ahora.</div>
+  } @else {
+  <section class="grid">
+    @for (event of filteredEvents(); track event.id) {
+    <article class="card">
+      <img [src]="event.image" [alt]="event.title" />
+      <div class="card-body">
+        <span class="badge">{{ event.status }}</span>
+        <h3>{{ event.title }}</h3>
+        <p>📅 {{ event.date }} · {{ event.time }}</p>
+        <p>🏷️ {{ event.category }}</p>
+        <p>📍 {{ event.venue }}</p>
+        <p class="slots">👥 Cupos disponibles: {{ event.slots }}</p>
+        <p class="description">{{ event.description }}</p>
+        <div class="card-actions">
+          <button
+            type="button"
+            class="btn-enroll"
+            (click)="onEnroll(event.id)"
+            [disabled]="!canEnroll(event) || isEnrolling(event.id) || enrolledEventIds().has(event.id)"
+          >
+            {{ enrollButtonLabel(event) }}
+          </button>
+          <a class="details-link" [routerLink]="['/events', event.id]">Más información</a>
+        </div>
+      </div>
+    </article>
+    }
+  </section>
+  }
+</div>

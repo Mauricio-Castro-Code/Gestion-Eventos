@@ -1,0 +1,122 @@
+<div class="landing-container">
+    <!-- Navbar -->
+    <nav class="navbar glass">
+        <div class="logo">GTEA</div>
+        <div class="nav-links">
+            <a href="#" class="nav-link">Inicio</a>
+            <a href="#eventos" class="nav-link">Eventos</a>
+        </div>
+        <div class="nav-actions">
+            <button class="btn btn-ghost" routerLink="/auth/login">Ingresar</button>
+            <button class="btn btn-primary-gradient" routerLink="/auth/register">Registro</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Gestión de Eventos <span class="highlight">Académicos</span></h1>
+            <p class="hero-subtitle">Tu portal institucional para inscripciones, control de asistencias y generación de
+                constancias certificadas.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary-gradient btn-lg" routerLink="/auth/register">Crear Cuenta</button>
+                <button class="btn btn-outline btn-lg" routerLink="/catalog">Ver Catálogo</button>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="floating-composition">
+                <div class="glass-shield">
+                    <mat-icon class="shield-icon">school</mat-icon>
+                </div>
+                <div class="float-item item-1 glass-circle">
+                    <mat-icon>event</mat-icon>
+                </div>
+                <div class="float-item item-2 glass-circle">
+                    <mat-icon>code</mat-icon>
+                </div>
+                <div class="float-item item-3 glass-circle">
+                    <mat-icon>emoji_events</mat-icon>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Upcoming Events -->
+    <section id="eventos" class="events-section">
+        <h2 class="section-title">Próximos Eventos</h2>
+        <div class="events-grid">
+            @if (isLoadingEvents()) {
+            <div class="glass-card event-card">
+                <div class="card-content">
+                    <h3 class="event-title">Cargando eventos...</h3>
+                </div>
+            </div>
+            } @else if (upcomingEvents().length === 0) {
+            <div class="glass-card event-card">
+                <div class="card-content">
+                    <h3 class="event-title">Aún no hay eventos publicados</h3>
+                </div>
+            </div>
+            } @else {
+            @for (event of upcomingEvents(); track event.id) {
+            <div class="glass-card event-card">
+                <img [src]="event.image" [alt]="event.title" class="event-image">
+                <div class="card-content">
+                    <div class="card-status">{{ event.status }}</div>
+                    <h3 class="event-title">{{ event.title }}</h3>
+                    <p class="event-date">📅 {{ event.date }}</p>
+                    <button class="btn btn-text" [routerLink]="['/events', event.id]">Más información →</button>
+                </div>
+            </div>
+            }
+            }
+        </div>
+    </section>
+
+    <!-- Benefits / How it works -->
+    <section class="benefits-section">
+        <div class="benefits-grid">
+            <div class="benefit-item glass-card">
+                <div class="icon-box">📝</div>
+                <h3>1. Regístrate</h3>
+                <p>Crea tu cuenta institucional en pocos pasos y accede a todos los servicios.</p>
+            </div>
+            <div class="benefit-item glass-card">
+                <div class="icon-box">🎟️</div>
+                <h3>2. Inscríbete</h3>
+                <p>Explora el catálogo de eventos y asegura tu lugar con un clic.</p>
+            </div>
+            <div class="benefit-item glass-card">
+                <div class="icon-box">🎓</div>
+                <h3>3. Obtén Constancia</h3>
+                <p>Participa y descarga tu constancia digtial validada automáticamente.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <h2 class="section-title">Preguntas Frecuentes</h2>
+        <div class="accordion">
+            @for (faq of faqs(); track faq.question; let i = $index) {
+            <div class="glass-card faq-item" [class.active]="faq.isOpen">
+                <button class="faq-question" (click)="toggleFaq(i)">
+                    {{ faq.question }}
+                    <span class="toggle-icon">{{ faq.isOpen ? '−' : '+' }}</span>
+                </button>
+                @if (faq.isOpen) {
+                <div class="faq-answer">
+                    <p>{{ faq.answer }}</p>
+                </div>
+                }
+            </div>
+            }
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer glass">
+        <p>&copy; 2024 GTEA - Gestión de Eventos Académicos. Todos los derechos reservados.</p>
+    </footer>
+</div>
