@@ -1,4 +1,4 @@
-# GTEA - Gestión de Tickets y Eventos Académicos
+# Gestion-Eventos (GTEA)
 ## Propuesta 1: Modern Glassmorphism (Glass Flux)
 
 Este proyecto es una aplicación web moderna construida con **Angular 20**, diseñada bajo el sistema de diseño **"Glass Flux"** que prioriza la estética premium, efectos de cristal (glassmorphism), gradientes vibrantes y una experiencia de usuario fluida y receptiva.
